@@ -1,0 +1,141 @@
+[
+    {
+        "code": "#include <stdio.h>\nint main() {\nprintf(\"Hello, World!\\n\");\nreturn 0;\n}",
+        "label": 0,
+        "error_locations": [],
+        "error_type": ""
+    },
+    {
+        "code": "#include <stdio.h>\nint main() {\nprintf(\"Hello, World!\\n\")\nreturn 0;\n}",
+        "label": 1,
+        "error_locations": [
+            "3"
+        ],
+        "error_type": "Missing semicolon"
+    },
+    {
+        "code": "#include <stdio.h>\nint main() {\nprintf(\"Hello, World!\\n\");\nretunr 0;\n}",
+        "label": 1,
+        "error_locations": [
+            "4"
+        ],
+        "error_type": "Misspelled keyword"
+    },
+    {
+        "code": "#include <stdio.h>\nint main() {\nprintf(\"Hello, World!\\n\");\nreturn 0\n}",
+        "label": 1,
+        "error_locations": [
+            "4"
+        ],
+        "error_type": "Missing semicolon"
+    },
+    {
+        "code": "#include <stdio.h>\nint main() {\nprintf(\"Hello, World!\\n\");\nreturn 0;;\n}",
+        "label": 1,
+        "error_locations": [
+            "4"
+        ],
+        "error_type": "Extra semicolon"
+    },
+    {
+        "code": "#include <stdio.h>\nint main() {\nprintf(\"Hello, World!\\n\"\nreturn 0;\n}",
+        "label": 1,
+        "error_locations": [
+            "3"
+        ],
+        "error_type": "Missing closing parenthesis"
+    },
+    {
+        "code": "#include <stdio.h>\nint main() {\nprintf(\"Hello, World!\\n\";\nreturn 0;\n}",
+        "label": 1,
+        "error_locations": [
+            "3"
+        ],
+        "error_type": "Extra semicolon inside printf"
+    },
+    {
+        "code": "#include <stdio.h>\nint main() {\nint a = 10;\nif (a > 5) {\nprintf(\"a is greater than 5\\n\");\nreturn 0;\n}",
+        "label": 1,
+        "error_locations": [
+            "6"
+        ],
+        "error_type": "Missing closing brace"
+    },
+    {
+        "code": "#include <stdio.h>\nint main( {\nprintf(\"Hello, World!\\n\");\nreturn 0;\n})",
+        "label": 1,
+        "error_locations": [
+            "2"
+        ],
+        "error_type": "Incorrect main function signature"
+    },
+    {
+        "code": "#include <stdio.h>\nint main() {\nchar *s = \"Hello, World!\";\nprintf(\"%s\\n\", s;\nreturn 0;\n}",
+        "label": 1,
+        "error_locations": [
+            "4"
+        ],
+        "error_type": "Missing closing parenthesis in printf"
+    },
+    {
+        "code": "#include <stdio.h>\nint main() {\nchar *s = \"Hello, World!;\nprintf(\"%s\\n\", s);\nreturn 0;\n}",
+        "label": 1,
+        "error_locations": [
+            "3"
+        ],
+        "error_type": "Unclosed string literal"
+    },
+    {
+        "code": "#include <stdio.h>\nint main() {\nprintf(\"Hello, World!\\n\");\nint a = 10\nif (a > 5) {\nprintf(\"a is greater than 5\\n\");\nreturn 0;\n}",
+        "label": 1,
+        "error_locations": [
+            "4"
+        ],
+        "error_type": "Missing semicolon after variable declaration"
+    },
+    {
+        "code": "#include <stdio.h>\nint main() {\nprintf(\"Hello, World!\\n\");\nint a = 10;\nif a > 5 {\nprintf(\"a is greater than 5\\n\");\nreturn 0;\n}",
+        "label": 1,
+        "error_locations": [
+            "5"
+        ],
+        "error_type": "Missing parentheses in if condition"
+    },
+    {
+        "code": "#include <stdio.h>\nint main() {\nint a = 10;\nif (a > 5) printf(\"a is greater than 5\\n\");\nreturn 0;\n}",
+        "label": 0,
+        "error_locations": [],
+        "error_type": ""
+    },
+    {
+        "code": "#include <stdio.h>\nint main() {\nint a = 10;\nif (a > 5) printf(\"a is greater than 5\\n\");\nreturn 0;\n}",
+        "label": 0,
+        "error_locations": [],
+        "error_type": ""
+    },
+    {
+        "code": "#include <stdio.h>\nint main(){\n}",
+        "label": 0,
+        "error_locations": [
+            ""
+        ],
+        "error_type": ""
+    },
+    {
+        "code": "#include <stdio.h>\nint main(){}",
+        "label": 0,
+        "error_locations": [
+            ""
+        ],
+        "error_type": ""
+    },
+    {
+        "code": "int main(){}",
+        "label": 0,
+        "error_locations": [
+            ""
+        ],
+        "error_type": ""
+    }
+    
+]

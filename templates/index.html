@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML01</title>
+    <style>
+        body {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            font-family: 'Pretendard', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #container {
+            display: flex;
+            width: 80%;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        textarea {
+            background-color: #2d2d2d;
+            color: #d4d4d4;
+            border: 1px solid #444;
+            padding: 10px;
+            width: 45%;
+            height: 400px;
+            resize: none;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        #result, #staticAnalysisResult, #regexAnalysisResult, #commentedCodeResult, #tracedCodeResult, #chatbox {
+            width: 45%;
+            border: 1px solid #444;
+            padding: 10px;
+            overflow-y: auto;
+            background-color: #2d2d2d;
+            color: #d4d4d4;
+            margin-top: 10px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: rgba(0,0,0,0);
+            color: #d4d4d4;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            width: 200px;
+            height: 50px;
+            border-radius: 10px;
+            transition: 0.5s ease-in-out;
+            
+        }
+        button:hover {
+            background-color: #4563EB;
+        }
+        #error-details {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            width: 80%;
+        }
+        input[type="text"], input[type="chat"] {
+            background-color: #2d2d2d;
+            color: #d4d4d4;
+            border: 1px solid #444;
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        label {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>ML01</h1>
+    <div id="container">
+        <textarea id="codeInput"></textarea>
+        <button id="analyzeButton">분석</button>
+        <button id="saveButton">데이터셋 저장</button>
+        <button id="retrainButton">리트레인</button>
+    </div>
+    <div id="error-details">
+        <label for="errorLocations">Error Locations (line numbers):</label>
+        <input type="text" id="errorLocations" placeholder="e.g., 3,5">
+        <label for="errorType">Error Type:</label>
+        <input type="text" id="errorType" placeholder="e.g., Missing semicolon">
+    </div>
+    <div id="chatbox"></div>
+    <div id="chat-input-container">
+        <input type="chat" id="chatInput" placeholder="Type your message here">
+        <button id="sendChatButton">Send</button>
+    </div>
+    <div id="result"></div>
+    <div id="staticAnalysisResult"></div>
+    <div id="regexAnalysisResult"></div>
+    <div id="commentedCodeResult"></div>
+    <div id="tracedCodeResult"></div>
+
+    <script>
+        document.getElementById('analyzeButton').addEventListener('click', function() {
+            analyzeCode(false);
+        });
+
+        document.getElementById('saveButton').addEventListener('click', function() {
+            analyzeCode(true);
+        });
+
+        document.getElementById('retrainButton').addEventListener('click', function() {
+            retrainModel();
+        });
+
+        document.getElementById('sendChatButton').addEventListener('click', function() {
+            sendChatMessage();
+        });
+
+        function analyzeCode(saveData) {
+            const code = document.getElementById('codeInput').value;
+            const errorLocations = document.getElementById('errorLocations').value.split(',').map(loc => loc.trim());
+            const errorType = document.getElementById('errorType').value;
+
+            fetch('/analyze', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `code=${encodeURIComponent(code)}&error_locations=${encodeURIComponent(errorLocations)}&error_type=${encodeURIComponent(errorType)}&save_data=${saveData}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = `Result: ${data.result}\nMessage: ${data.message}`;
+                document.getElementById('staticAnalysisResult').innerText = `Static Analysis Errors:\n${data.static_errors.join('\n')}`;
+                document.getElementById('regexAnalysisResult').innerText = `Regex Analysis Matches:\n${data.regex_matches.join('\n')}`;
+                document.getElementById('commentedCodeResult').innerText = `Commented Code:\n${data.commented_code}`;
+                document.getElementById('tracedCodeResult').innerText = `Traced Code:\n${data.traced_code}\n\nVariables:\n${JSON.stringify(data.variables, null, 2)}`;
+                
+                const chatbox = document.getElementById('chatbox');
+                chatbox.innerHTML += `<div>User: ${code}</div>`;
+                chatbox.innerHTML += `<div>ML01: ${data.natural_language_output}</div>`;
+                chatbox.scrollTop = chatbox.scrollHeight;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        function retrainModel() {
+            fetch('/retrain', {
+                method: 'POST',
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        function sendChatMessage() {
+            const chatInput = document.getElementById('chatInput').value;
+            const chatbox = document.getElementById('chatbox');
+            chatbox.innerHTML += `<div>User: ${chatInput}</div>`;
+            document.getElementById('chatInput').value = '';
+
+            fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `message=${encodeURIComponent(chatInput)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                chatbox.innerHTML += `<div>ML01: ${data.reply}</div>`;
+                chatbox.scrollTop = chatbox.scrollHeight;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
