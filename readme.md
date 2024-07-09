@@ -27,7 +27,7 @@ ML01 코드 분석기는 GPT를 사용하지 않고, 데이터를 통하여 직�
 
 1. **저장소 클론**:
     ```bash
-    git clone https://github.com/noth3dev/ML01-Code-Analyzer.git
+    git clone https://github.com/noth3dev/ML01.git
     cd ML01-Code-Analyzer
     ```
 
